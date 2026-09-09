@@ -1,0 +1,67 @@
+# ==============================================================
+#  Blood Cells Images Classification - fichiers non versionnes
+# ==============================================================
+
+# --- Donnees ---------------------------------------------------
+# Les datasets ne sont PAS versionnes (volume + limite GitHub 100 Mo/fichier).
+# Voir le README pour la procedure de telechargement et l'emplacement attendu.
+# Le dossier lui-meme reste dans le depot (via .gitkeep) pour que l'arborescence
+# soit prete apres un clone : seul son contenu est ignore.
+data/*
+!data/.gitkeep
+dataset-master/
+dataset2-master/
+*.zip
+
+# --- Modeles entraines ----------------------------------------
+# Regenerables via les scripts, trop volumineux pour un depot git.
+models/*
+!models/.gitkeep
+*.h5
+*.keras
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.joblib
+*.pkl
+
+# --- Environnement Python -------------------------------------
+venv/
+.venv/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.Python
+
+# --- Notebooks -------------------------------------------------
+.ipynb_checkpoints/
+
+# --- Sorties volumineuses / temporaires ------------------------
+logs/
+runs/
+wandb/
+mlruns/
+.cache/
+tmp/
+*.log
+
+# --- Outils de developpement -----------------------------------
+.claude/
+.vscode/
+.idea/
+*.swp
+
+# --- Systeme ---------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+desktop.ini
+
+# --- Exceptions ------------------------------------------------
+# Les figures et metriques de results/ sont volontairement versionnees
+# (depot lisible sans avoir a tout reexecuter) : ne rien ignorer ici.
