@@ -3,6 +3,7 @@ import os
 import  cv2# python-m pip install opencv-python
 import numpy
 import matplotlib.pyplot as plt
+import numpy.random as npr
 #COUNT PICTURE/GROUPS
 
 #PATH
@@ -81,23 +82,24 @@ def variance_picture(colors_by_group):
 #canau = ['Bleu', 'Vert', 'Rouge']
 
 # Graphique avec plt
- 
+
 def plot_variance(colors_by_group):
  
     canaux = ['Bleu', 'Vert', 'Rouge']
  
-    fig, axes = plt.subplots(1, 3, figsize=(15,5)) # pour avoir 3 graph et pas jsute 1 graph
+    fig, axes = plt.subplots(1,3, figsize=(15,5)) # pour avoir 3 graph et pas jsute 1 graph
     #print(fig) # taille de fig
     for i in range(3):
         data = []
         labels = []
         for group, colors in colors_by_group.items():
             colors = numpy.array(colors)
-            print(colors[i])
+            #print(colors[i])
             #print(group)
             data.append(colors[:, i]) # donc on garde toute les lignes et i pour la couleur car colors est en 2 dimensions
             # en gros con garde juste la colonne i qui corresponde au valeur de bleu vert ou rouge
             # donc prends toutes les couelrus mais garde uniquement la valeur du canal i
+            
             labels.append(group)
  
         axes[i].boxplot(data, label=labels)
@@ -105,7 +107,7 @@ def plot_variance(colors_by_group):
  
     plt.show()
  
-plot_variance(colors_by_group)
+#plot_variance(colors_by_group)
 
 #seaborn à voir pour une 
 # voir pour faire un nuage de point et je color par type pour voir la distribution des données
@@ -115,30 +117,60 @@ plot_variance(colors_by_group)
 
 
 
+# def plot_scatter_rgb(colors_by_group):
+#     couleurs_affichage = {"EOSINOPHIL": "orange", "LYMPHOCYTE": "blue",
+#                            "MONOCYTE": "green", "NEUTROPHIL": "red"}
+#     noms_canaux = ["Bleu", "Vert", "Rouge"]  # ordre BGR d'OpenCV
 
-# Graphique avec plt 
- 
-def plot_scatter(colors_by_group):
- 
-    canaux = ['Bleu', 'Vert', 'Rouge']
- 
-    fig, axes = plt.scatter(1, 3) # pour avoir 3 graph et pas jsute 1 graph
-    #print(fig) # taille de fig
+#     fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+
+#     for i in range(3):
+#         x_courant = 0  # réinitialisé pour chaque canal
+#         for group, colors in colors_by_group.items():
+#             colors = numpy.array(colors)
+#             valeurs_canal = colors[:, i]
+
+#             n = len(valeurs_canal)
+#             x_indices = numpy.arange(x_courant, x_courant + n)
+
+#             axes[i].scatter(x_indices, valeurs_canal, c=couleurs_affichage[group],
+#                              label=group, alpha=0.5, s=10)
+
+#             x_courant += n  # décale le point de départ pour le groupe suivant
+
+#         axes[i].set_title(noms_canaux[i])
+#         axes[i].set_xlabel("Index image")
+#         axes[i].legend()
+
+#     plt.tight_layout()
+#     plt.show()
+
+# plot_scatter_rgb(colors_by_group)
+
+def plot_distribution_superposee(colors_by_group):
+    couleurs_affichage = {"EOSINOPHIL": "orange", "LYMPHOCYTE": "blue",
+                           "MONOCYTE": "green", "NEUTROPHIL": "red"}
+    noms_canaux = ["Bleu", "Vert", "Rouge"]  # ordre BGR d'OpenCV
+
+    fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+
     for i in range(3):
-        data = []
-        labels = []
         for group, colors in colors_by_group.items():
             colors = numpy.array(colors)
-            print(colors[i])
-            #print(group)
-            data.append(colors[:, i]) # donc on garde toute les lignes et i pour la couleur car colors est en 2 dimensions
-            # en gros con garde juste la colonne i qui corresponde au valeur de bleu vert ou rouge
-            # donc prends toutes les couelrus mais garde uniquement la valeur du canal i
-            labels.append(group)
- 
-        axes[i].boxplot(data, label=labels)
-        axes[i].set_title(canaux[i])
- 
+            valeurs_canal = colors[:, i]
+
+            y_jitter = npr.normal(0, 0.3, size=len(valeurs_canal))
+
+            axes[i].scatter(valeurs_canal, y_jitter, c=couleurs_affichage[group],
+                             label=group, alpha=0.4, s=10)
+
+        axes[i].set_title(f"Distribution du canal {noms_canaux[i]}")
+        axes[i].set_xlabel(f"Valeur moyenne {noms_canaux[i]}")
+        axes[i].set_yticks([])  # l'axe Y n'a pas de sens réel, juste étalement visuel
+        axes[i].legend()
+
+    plt.suptitle("Distribution RVB par type cellulaire — groupes superposés")
+    plt.tight_layout()
     plt.show()
- 
-plot_scatter(colors_by_group)
+
+plot_distribution_superposee(colors_by_group)
