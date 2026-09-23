@@ -75,7 +75,7 @@ def variance_picture(colors_by_group):
         ecart_type = colors.std(axis=0)
         print(f"{group} : ecart-type (B,V,R) : {ecart_type}")
  
-variance_picture(colors_by_group)
+#variance_picture(colors_by_group)
  
 
 #canau = ['Bleu', 'Vert', 'Rouge']
@@ -109,3 +109,36 @@ plot_variance(colors_by_group)
 
 #seaborn à voir pour une 
 # voir pour faire un nuage de point et je color par type pour voir la distribution des données
+# 
+
+
+
+
+
+
+# Graphique avec plt 
+ 
+def plot_scatter(colors_by_group):
+ 
+    canaux = ['Bleu', 'Vert', 'Rouge']
+ 
+    fig, axes = plt.scatter(1, 3) # pour avoir 3 graph et pas jsute 1 graph
+    #print(fig) # taille de fig
+    for i in range(3):
+        data = []
+        labels = []
+        for group, colors in colors_by_group.items():
+            colors = numpy.array(colors)
+            print(colors[i])
+            #print(group)
+            data.append(colors[:, i]) # donc on garde toute les lignes et i pour la couleur car colors est en 2 dimensions
+            # en gros con garde juste la colonne i qui corresponde au valeur de bleu vert ou rouge
+            # donc prends toutes les couelrus mais garde uniquement la valeur du canal i
+            labels.append(group)
+ 
+        axes[i].boxplot(data, label=labels)
+        axes[i].set_title(canaux[i])
+ 
+    plt.show()
+ 
+plot_scatter(colors_by_group)
